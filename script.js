@@ -14,6 +14,10 @@ var classNameList = {
     2048:"super-tile",
 };
 
+var currentTurn = 0;
+
+var allTileArrays = [];
+
 var currentTileArray = [16];
 
 for(i = 0; i < 16; i++){
@@ -22,8 +26,12 @@ for(i = 0; i < 16; i++){
 
 injectTiles();
 assignFirstTwoTiles();
+paintTiles();
+document.addEventListener("keydown", (e) =>{
+    updateTiles(e);
+});
 
-window.setInterval(paintTiles, 100);
+//window.setInterval(paintTiles, 500);
 
 
 function injectTiles(){
@@ -45,27 +53,39 @@ function assignFirstTwoTiles(){
     while(firstIndex == secondIndex){
         secondIndex = getRandomNumberCeiling16();
     };
-    currentTileArray[firstIndex] = 2;
-    currentTileArray[secondIndex] = 2;
+    currentTileArray[4] = 2;
+    currentTileArray[7] = 2;
+}
+function generateTile(){
+    // get index
+    // check if index has a -1
+    // if index has a -1 assign it to two and break
+
+    var index = getRandomNumberCeiling16();
+    while(true){
+        if(currentTileArray[index] == -1){
+            currentTileArray[index] = 2;
+            break;
+        }
+        index = getRandomNumberCeiling16();
+    };
 }
 
 
 
 function paintTiles(){
     var tilesContainer = document.querySelector("#tiles-container");
-    while (tilesContainer.firstChild) {
-        tilesContainer.removeChild(tilesContainer.firstChild);
-    }
-    var tile = takeTemplateIdReturnFirstChildNode("#tile-template");
-
     for(i = 0; i < 16; i++){
-        var tile = takeTemplateIdReturnFirstChildNode("#tile-template");
-        tile.id = i;
+        var tile = tilesContainer.children[i];
         if(currentTileArray[i] != -1){
+            if(!tile.firstElementChild) tile.appendChild(takeTemplateIdReturnFirstChildNode("#tile-template").children[0]);
             tile.firstElementChild.textContent = currentTileArray[i];
+            Object.values(classNameList).forEach((value) => { tile.classList.remove(value)});
             tile.classList.add(classNameList[currentTileArray[i]])
-        };
-        tilesContainer.appendChild(tile);
+        } else {
+            Object.values(classNameList).forEach((value) => { tile.classList.remove(value)});
+            tile.textContent = "";
+        }
     }
 }
 
@@ -86,10 +106,80 @@ function startNewGame(){
 }
 
 function takeTemplateIdReturnFirstChildNode(id){
-    return document.querySelector(id).content.firstElementChild.cloneNode(true);
+    var node = document.querySelector(id).content.firstElementChild.cloneNode(true);
+    return node;
 };
 
-document.addEventListener("keydown",increaseBestScore,null);
-document.addEventListener("keydown",increaseCurrentScore,null);
+function updateTiles(e){
+    console.log("ran");
+    
+    if(e.key == "ArrowDown"){
+        for(i = 0; i < 12; i++){
+            mergeAIntoB(i, i+4);
+        }
+        generateTile();
+        paintTiles();
+    };
+    
+    if(e.key == "ArrowUp"){
+        for(i = 15; i  > 3; i--){
+            mergeAIntoB(i, i-4);
+        }
+        generateTile();
+        paintTiles();
+    };
+    
+    if(e.key == "ArrowLeft"){
+        for(i = 3; i > 0; i--){
+            mergeAIntoB(i, i-1);
+        }
+        for(i = 7; i > 4; i--){
+            mergeAIntoB(i, i-1);
+        }
+        for(i = 11; i > 8; i--){
+            mergeAIntoB(i, i-1);
+        }
+        for(i = 15; i > 12; i--){
+            mergeAIntoB(i, i-1);
+        }
+        generateTile();
+        paintTiles();
+    };
+    if(e.key == "ArrowRight"){
+        for(i = 0; i < 3; i++){
+            mergeAIntoB(i, i+1);
+        }
+        for(i = 4; i < 7; i++){
+            mergeAIntoB(i, i+1);
+        }
+        for(i = 8; i < 11; i++){
+            mergeAIntoB(i, i+1);
+        }
+        for(i = 12; i < 15; i++){
+            mergeAIntoB(i, i+1);
+        }
+        generateTile();
+        paintTiles();
+    };
+
+}
+
+function mergeAIntoB(indexA, indexB){
+    console.log(indexA, indexB);
+    if(currentTileArray[indexA] == -1){
+        return;
+    }
+    if(currentTileArray[indexB] == -1){
+        currentTileArray[indexB] = currentTileArray[indexA];
+        currentTileArray[indexA] = -1;
+        return;
+    }
+    if(currentTileArray[indexA] == currentTileArray[indexB]){
+        currentTileArray[indexB] = currentTileArray[indexA] * 2;
+        currentTileArray[indexA] = -1;
+        return;
+    };
+    return;
+}
 
 

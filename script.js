@@ -140,6 +140,15 @@ swipeArea.addEventListener('swipeRight', () => {
     redraw();
 });
 
+document.querySelector("#game-container").addEventListener("touchstart", preventScroll);
+document.querySelector("#game-container").addEventListener("touchmove", preventScroll);
+document.querySelector("#game-container").addEventListener("touchend", preventScroll);
+document.querySelector("#game-container").addEventListener("touchcancel", preventScroll);
+
+function preventScroll(e){
+    e.preventDefault();
+    e.stopPropagation();
+}
 
 function updateTiles(e) {
     console.log("ran");

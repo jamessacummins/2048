@@ -132,3 +132,23 @@
     background-color: #eee1c9;
     color:var(--light-brown);
 }
+._8-tile {
+    background-color: #f3b27a;
+    color:#fff;
+}
+._16-tile {
+    background-color: #f3b27a;
+    color:#fff;
+}
+._32-tile {
+    background-color: #f77c5f;
+    color:#fff;
+}
+._64-tile {
+    background-color: #f75f3b;
+    color:#fff;
+}
+.super-tile {
+    background-color: #edd073;
+    color:#fff;
+}

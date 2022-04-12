@@ -11,7 +11,7 @@ function increaseCurrentScore(){
 }
 
 function startNewGame(){
-
+    console.log("started!")
 }
 
 document.addEventListener("keydown",increaseBestScore,null);

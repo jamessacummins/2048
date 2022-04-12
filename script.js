@@ -115,6 +115,8 @@ function redraw() {
     paintTiles();
 }
 
+const { SwipeEventListener } = window.SwipeEventListener;
+
 const { swipeArea, updateOptions } = SwipeEventListener({
     swipeArea: document.querySelector('body'),
 });

@@ -118,7 +118,7 @@ function redraw() {
 const { SwipeEventListener } = window.SwipeEventListener;
 
 const { swipeArea, updateOptions } = SwipeEventListener({
-    swipeArea: document.querySelector('body'),
+    swipeArea: document.querySelector('#game-container'),
 });
 
 swipeArea.addEventListener('swipeDown', () => {

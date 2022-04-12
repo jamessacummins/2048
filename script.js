@@ -114,72 +114,72 @@ function updateTiles(e){
     console.log("ran");
     
     if(e.key == "ArrowDown"){
-        for(i = 0; i < 12; i++){
-            mergeAIntoB(i, i+4);
-        }
+        for(index = 0; index < 4; index++){
+            var mergeSame = mergeAIntoB(index + 8, index + 12, true);
+            mergeSame = mergeAIntoB(index + 4, index + 8, mergeSame);
+            mergeSame = mergeAIntoB(index + 8, index + 12, mergeSame);
+            mergeSame = mergeAIntoB(index + 0, index + 4, mergeSame);
+            mergeSame = mergeAIntoB(index + 4, index + 8, mergeSame);
+            mergeSame = mergeAIntoB(index + 8, index + 12, mergeSame);
+        };
         generateTile();
         paintTiles();
     };
-    
     if(e.key == "ArrowUp"){
-        for(i = 15; i  > 3; i--){
-            mergeAIntoB(i, i-4);
-        }
+        for(index = 12; index < 16; index++){
+            var mergeSame = mergeAIntoB(index - 8, index - 12, true);
+            mergeSame = mergeAIntoB(index - 4, index - 8, mergeSame);
+            mergeSame = mergeAIntoB(index - 8, index - 12, mergeSame);
+            mergeSame = mergeAIntoB(index - 0, index - 4, mergeSame);
+            mergeSame = mergeAIntoB(index - 4, index - 8, mergeSame);
+            mergeSame = mergeAIntoB(index - 8, index - 12, mergeSame);
+        };
         generateTile();
         paintTiles();
     };
-    
     if(e.key == "ArrowLeft"){
-        for(i = 3; i > 0; i--){
-            mergeAIntoB(i, i-1);
-        }
-        for(i = 7; i > 4; i--){
-            mergeAIntoB(i, i-1);
-        }
-        for(i = 11; i > 8; i--){
-            mergeAIntoB(i, i-1);
-        }
-        for(i = 15; i > 12; i--){
-            mergeAIntoB(i, i-1);
-        }
+        for(index = 3; index < 16; index += 4){
+            var mergeSame = mergeAIntoB(index - 2, index - 3, true);
+            mergeSame = mergeAIntoB(index - 1, index - 2, mergeSame);
+            mergeSame = mergeAIntoB(index - 2, index - 3, mergeSame);
+            mergeSame = mergeAIntoB(index - 0, index - 1, mergeSame);
+            mergeSame = mergeAIntoB(index - 1, index - 2, mergeSame);
+            mergeSame = mergeAIntoB(index - 2, index - 3, mergeSame);
+        };
         generateTile();
         paintTiles();
     };
     if(e.key == "ArrowRight"){
-        for(i = 0; i < 3; i++){
-            mergeAIntoB(i, i+1);
-        }
-        for(i = 4; i < 7; i++){
-            mergeAIntoB(i, i+1);
-        }
-        for(i = 8; i < 11; i++){
-            mergeAIntoB(i, i+1);
-        }
-        for(i = 12; i < 15; i++){
-            mergeAIntoB(i, i+1);
-        }
+        for(index = 0; index < 13; index += 4){
+            var mergeSame = mergeAIntoB(index + 2, index + 3, true);
+            mergeSame = mergeAIntoB(index + 1, index + 2, mergeSame);
+            mergeSame = mergeAIntoB(index + 2, index + 3, mergeSame);
+            mergeSame = mergeAIntoB(index + 0, index + 1, mergeSame);
+            mergeSame = mergeAIntoB(index + 1, index + 2, mergeSame);
+            mergeSame = mergeAIntoB(index + 2, index + 3, mergeSame);
+        };
         generateTile();
         paintTiles();
     };
-
 }
 
-function mergeAIntoB(indexA, indexB){
+function mergeAIntoB(indexA, indexB, mergeSame){
     console.log(indexA, indexB);
     if(currentTileArray[indexA] == -1){
-        return;
+        return mergeSame;
     }
     if(currentTileArray[indexB] == -1){
         currentTileArray[indexB] = currentTileArray[indexA];
         currentTileArray[indexA] = -1;
-        return;
+        return mergeSame;
     }
-    if(currentTileArray[indexA] == currentTileArray[indexB]){
+    if(currentTileArray[indexA] == currentTileArray[indexB] && mergeSame){
+        console.log("was the same");
         currentTileArray[indexB] = currentTileArray[indexA] * 2;
         currentTileArray[indexA] = -1;
-        return;
+        return false;
     };
-    return;
+    return mergeSame;
 }
 
 

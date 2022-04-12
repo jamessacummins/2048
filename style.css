@@ -6,6 +6,7 @@
     --light-brown: #776e65;
     --container-brown: #bbada0;
     --dark-brown: #8f7a66;
+    --blank-tile: #eee4da33;
 }
 *{
     font-family: 'Exo', sans-serif;
@@ -105,11 +106,25 @@
     height: 90%;
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    column-gap: min(8px, 1vw);
-    row-gap: min(8px, 1vw);
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    column-gap: min(16px, 2vw);
+    row-gap: min(16px, 2vw);
 }
 
 .tile{
-    background-color: #fff;
-    border:1px solid black;
+    background-color: var(--blank-tile);
+    border-radius:2px;
+
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+
+    color:#776e65;
+    font-weight:700;
+}
+
+._2-tile{
+    background-color: #eee4da;
+    color:var(--light-brown);
 }

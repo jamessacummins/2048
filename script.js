@@ -140,9 +140,6 @@ swipeArea.addEventListener('swipeRight', () => {
     redraw();
 });
 
-document.querySelector("#game-container").ontouchmove = function (e) {
-    e.preventDefault();
-};
 
 function updateTiles(e) {
     console.log("ran");

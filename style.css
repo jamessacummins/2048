@@ -96,6 +96,8 @@
     max-height:500px;
     height:92vw;
     border-radius: 8px;
+    overflow:hidden;
+    touch-action: none;
     
     display:flex;
     align-items: center;

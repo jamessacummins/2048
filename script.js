@@ -25,7 +25,8 @@ for (i = 0; i < 16; i++) {
 };
 
 injectTiles();
-assignFirstTwoTiles();
+//assignFirstTwoTiles();
+currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
 paintTiles();
 document.addEventListener("keydown", (e) => {
     updateTiles(e);
@@ -111,8 +112,57 @@ function takeTemplateIdReturnFirstChildNode(id) {
 };
 
 function redraw() {
-    generateTile();
-    paintTiles();
+
+    if(currentTileArray.includes(-1)){
+        generateTile();
+    }
+
+    if(hasMovesAvailable()){
+        paintTiles();
+    } else {
+        paintTiles();
+        gameOver();
+    }
+
+}
+
+
+function hasMovesAvailable(){
+    var hasMoves = false;
+    for(i = 0; i < 16; i++){
+        if(tileCanMerge(i)){
+            hasMoves = true;
+            break;
+        }
+    }
+    return hasMoves;
+};
+
+function tileCanMerge(index){
+    leftArray = [ 3, 7, 11, 15 ];
+    rightArray = [ 0, 4, 8, 12 ];
+
+    if(currentTileArray[index + 1] != undefined && currentTileArray[index] != -1 && ! leftArray.includes(index) && (currentTileArray[index] == currentTileArray[index + 1] || currentTileArray[index + 1] == -1)){
+        console.log(index+ " right");
+        return true;
+    }
+    if(currentTileArray[index - 1] != undefined && currentTileArray[index] != -1 && ! rightArray.includes(index)  && (currentTileArray[index] == currentTileArray[index - 1] || currentTileArray[index - 1] == -1)){
+        console.log(index + " left");
+        return true;
+    }
+    if(currentTileArray[index - 4] != undefined && currentTileArray[index] != -1  && (currentTileArray[index] == currentTileArray[index - 4] || currentTileArray[index - 4] == -1)){
+        console.log(index + " up");
+        return true;
+    }
+    if(currentTileArray[index + 4] != undefined && currentTileArray[index] != -1  && (currentTileArray[index] == currentTileArray[index + 4] || currentTileArray[index + 4] == -1)){
+        console.log(index + " down");
+        return true;
+    }
+    return false;
+}
+
+function gameOver(){
+    console.log("game over");
 }
 
 const { SwipeEventListener } = window.SwipeEventListener;
@@ -214,7 +264,6 @@ function mergeRight() {
 }
 
 function mergeAIntoB(indexA, indexB, mergeSame) {
-    console.log(indexA, indexB);
     if (currentTileArray[indexA] == -1) {
         return mergeSame;
     }
@@ -224,7 +273,6 @@ function mergeAIntoB(indexA, indexB, mergeSame) {
         return mergeSame;
     }
     if (currentTileArray[indexA] == currentTileArray[indexB] && mergeSame) {
-        console.log("was the same");
         currentTileArray[indexB] = currentTileArray[indexA] * 2;
         currentTileArray[indexA] = -1;
         return false;

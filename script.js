@@ -23,11 +23,12 @@ var currentTileArray = [16];
 var currentScore = 0;
 var bestScore = 0;
 var lock = false;
+var won = false;
 
 populateArray();
 injectTiles();
 assignFirstTwoTiles();
-//currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
+//currentTileArray = [16, 8, 4, 16, 32, 64, 128, 1024, 1024, 1024, 16, 32, 4, 256, 2, -1]
 paintTilesAndScore();
 document.addEventListener("keydown", (e) => {
     updateTiles(e);
@@ -41,10 +42,12 @@ function populateArray() {
     };
 }
 function reset() {
+    won = false;
     currentScore = 0;
     populateArray();
     assignFirstTwoTiles();
     if (document.querySelector("#game-over-container")) document.querySelector("#game-over-container").remove();
+    if (document.querySelector("#win-container")) document.querySelector("#win-container").remove();
     paintTilesAndScore();
     lock = false;
 }
@@ -127,18 +130,41 @@ function takeTemplateIdReturnFirstChildNode(id) {
 };
 
 function redraw() {
-
-    if (currentTileArray.includes(-1)) {
-        generateTile();
-    }
-
-    if (hasMovesAvailable()) {
-        paintTilesAndScore();
+    if (hasWon()){
+        handleWin();
     } else {
-        paintTilesAndScore();
-        gameOver();
-    }
+        if (currentTileArray.includes(-1)) {
+            generateTile();
+        }
 
+        if (hasMovesAvailable()) {
+            paintTilesAndScore();
+        } else {
+            paintTilesAndScore();
+            gameOver();
+        }
+    }
+}
+
+function hasWon(){
+    if(won == false && currentTileArray.includes(2048)) {
+        won = true;
+        return won;
+    } 
+    return false;
+}
+
+function handleWin(){
+    paintTilesAndScore();
+    lock = true;
+    var wonGameTemplate = takeTemplateIdReturnFirstChildNode("#won-game-template");
+    var gameParent = document.querySelector("#game-parent-container");
+    gameParent.appendChild(wonGameTemplate);
+}
+
+function keepGoing(){
+    lock = false;
+    document.querySelector("#win-container").remove();
 }
 
 

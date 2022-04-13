@@ -200,3 +200,40 @@
     user-select: none;
     cursor: pointer;
 }
+
+#win-container{
+    background-color: #edd073cc;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    overflow:hidden;
+    touch-action: none;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    top: 0;
+    right: 0;
+}
+
+#win-text{
+    font-weight: 700;
+    color:#fff;
+    font-size:60px;
+    margin-bottom:32px;
+}
+
+#keep-going-button{
+    margin-top: 32px;
+    background-color: var(--dark-brown);
+    color:#fff;
+    font-size:24px;
+    border-radius: 4px;
+    padding:4px 16px;
+    font-weight:500;
+
+    user-select: none;
+    cursor: pointer;
+}

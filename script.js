@@ -25,8 +25,8 @@ for (i = 0; i < 16; i++) {
 };
 
 injectTiles();
-//assignFirstTwoTiles();
-currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
+assignFirstTwoTiles();
+//currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
 paintTiles();
 document.addEventListener("keydown", (e) => {
     updateTiles(e);

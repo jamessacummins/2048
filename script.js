@@ -20,10 +20,7 @@ var allTileArrays = [];
 
 var currentTileArray = [16];
 
-for (i = 0; i < 16; i++) {
-    currentTileArray[i] = -1;
-};
-
+populateArray();
 injectTiles();
 assignFirstTwoTiles();
 //currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
@@ -34,7 +31,17 @@ document.addEventListener("keydown", (e) => {
 
 //window.setInterval(paintTiles, 500);
 
-
+function populateArray(){
+    for (i = 0; i < 16; i++) {
+        currentTileArray[i] = -1;
+    };
+}
+function reset(){
+    populateArray();
+    assignFirstTwoTiles();
+    if(document.querySelector("#game-over-container")) document.querySelector("#game-over-container").remove();
+    paintTiles();
+}
 function injectTiles() {
 
     var tilesContainer = document.querySelector("#tiles-container");
@@ -54,8 +61,8 @@ function assignFirstTwoTiles() {
     while (firstIndex == secondIndex) {
         secondIndex = getRandomNumberCeiling16();
     };
-    currentTileArray[4] = 2;
-    currentTileArray[7] = 2;
+    currentTileArray[firstIndex] = 2;
+    currentTileArray[secondIndex] = 2;
 }
 function generateTile() {
     // get index
@@ -162,7 +169,9 @@ function tileCanMerge(index){
 }
 
 function gameOver(){
-    console.log("game over");
+    var gameOverTemplate = takeTemplateIdReturnFirstChildNode("#game-over-template");
+    var gameParent = document.querySelector("#game-parent-container");
+    gameParent.appendChild(gameOverTemplate);
 }
 
 const { SwipeEventListener } = window.SwipeEventListener;

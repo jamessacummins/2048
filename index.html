@@ -29,12 +29,14 @@
                     </div>
                 </div>
                 <div id="new-game-row">
-                    <div id="new-game-button" onclick="startNewGame()">
+                    <div id="new-game-button" onclick="reset()">
                         New Game
                     </div>
                 </div>
-                <div id="game-container">
-                    <div id="tiles-container">
+                <div id ="game-parent-container">
+                    <div id="game-container">
+                        <div id="tiles-container">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,6 +45,16 @@
             <div class="tile">
                 <div class="tile-number">
                     
+                </div>
+            </div>
+        </template>
+        <template id="game-over-template">
+            <div id="game-over-container">
+                <div id="game-over-text">
+                    Game Over
+                </div>
+                <div id="try-again-button" onclick="reset()">
+                    Try Again
                 </div>
             </div>
         </template>

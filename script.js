@@ -1,5 +1,5 @@
-var bestScore = document.getElementById("best-score");
-var currentScore = document.getElementById("current-score");
+var bestScoreHTML = document.getElementById("best-score");
+var currentScoreHTML = document.getElementById("current-score");
 var classNameList = {
     2: "_2-tile",
     4: "_4-tile",
@@ -20,11 +20,14 @@ var allTileArrays = [];
 
 var currentTileArray = [16];
 
+var currentScore = 0;
+var bestScore = 0;
+
 populateArray();
 injectTiles();
 assignFirstTwoTiles();
 //currentTileArray = [16, 8, 4, 16, 32, 64, 128, 2048, 1024, 128, 16, 32, 4, 256, 2, -1]
-paintTiles();
+paintTilesAndScore();
 document.addEventListener("keydown", (e) => {
     updateTiles(e);
 });
@@ -37,10 +40,11 @@ function populateArray(){
     };
 }
 function reset(){
+    currentScore = 0;
     populateArray();
     assignFirstTwoTiles();
     if(document.querySelector("#game-over-container")) document.querySelector("#game-over-container").remove();
-    paintTiles();
+    paintTilesAndScore();
 }
 function injectTiles() {
 
@@ -81,7 +85,7 @@ function generateTile() {
 
 
 
-function paintTiles() {
+function paintTilesAndScore() {
     var tilesContainer = document.querySelector("#tiles-container");
     for (i = 0; i < 16; i++) {
         var tile = tilesContainer.children[i];
@@ -95,6 +99,8 @@ function paintTiles() {
             tile.textContent = "";
         }
     }
+    updateBestScore();
+    updateCurrentScore();
 }
 
 
@@ -102,11 +108,11 @@ function getRandomNumberCeiling16() {
     return Math.floor(Math.random() * 16);
 };
 
-function increaseBestScore() {
-    bestScore.innerHTML = Number(bestScore.innerHTML) + 1;
+function updateBestScore() {
+    bestScoreHTML.innerHTML = bestScore;
 }
-function increaseCurrentScore() {
-    currentScore.innerHTML = Number(currentScore.innerHTML) + 1;
+function updateCurrentScore() {
+    currentScoreHTML.innerHTML = currentScore;
 }
 
 function startNewGame() {
@@ -125,9 +131,9 @@ function redraw() {
     }
 
     if(hasMovesAvailable()){
-        paintTiles();
+        paintTilesAndScore();
     } else {
-        paintTiles();
+        paintTilesAndScore();
         gameOver();
     }
 
@@ -282,11 +288,19 @@ function mergeAIntoB(indexA, indexB, mergeSame) {
         return mergeSame;
     }
     if (currentTileArray[indexA] == currentTileArray[indexB] && mergeSame) {
+        updateScore(indexA);
         currentTileArray[indexB] = currentTileArray[indexA] * 2;
         currentTileArray[indexA] = -1;
         return false;
     };
     return mergeSame;
+}
+
+function updateScore(index){
+    currentScore += (currentTileArray[index] + currentTileArray[index]);
+    if(currentScore > bestScore){
+        bestScore = currentScore;
+    }
 }
 
 

@@ -22,6 +22,7 @@ var currentTileArray = [16];
 
 var currentScore = 0;
 var bestScore = 0;
+var lock = false;
 
 populateArray();
 injectTiles();
@@ -34,17 +35,18 @@ document.addEventListener("keydown", (e) => {
 
 //window.setInterval(paintTiles, 500);
 
-function populateArray(){
+function populateArray() {
     for (i = 0; i < 16; i++) {
         currentTileArray[i] = -1;
     };
 }
-function reset(){
+function reset() {
     currentScore = 0;
     populateArray();
     assignFirstTwoTiles();
-    if(document.querySelector("#game-over-container")) document.querySelector("#game-over-container").remove();
+    if (document.querySelector("#game-over-container")) document.querySelector("#game-over-container").remove();
     paintTilesAndScore();
+    lock = false;
 }
 function injectTiles() {
 
@@ -126,11 +128,11 @@ function takeTemplateIdReturnFirstChildNode(id) {
 
 function redraw() {
 
-    if(currentTileArray.includes(-1)){
+    if (currentTileArray.includes(-1)) {
         generateTile();
     }
 
-    if(hasMovesAvailable()){
+    if (hasMovesAvailable()) {
         paintTilesAndScore();
     } else {
         paintTilesAndScore();
@@ -140,10 +142,10 @@ function redraw() {
 }
 
 
-function hasMovesAvailable(){
+function hasMovesAvailable() {
     var hasMoves = false;
-    for(i = 0; i < 16; i++){
-        if(tileCanMerge(i)){
+    for (i = 0; i < 16; i++) {
+        if (tileCanMerge(i)) {
             hasMoves = true;
             break;
         }
@@ -151,33 +153,34 @@ function hasMovesAvailable(){
     return hasMoves;
 };
 
-function tileCanMerge(index){
-    leftArray = [ 3, 7, 11, 15 ];
-    rightArray = [ 0, 4, 8, 12 ];
+function tileCanMerge(index) {
+    leftArray = [3, 7, 11, 15];
+    rightArray = [0, 4, 8, 12];
 
-    if(currentTileArray[index + 1] != undefined && currentTileArray[index] != -1 && ! leftArray.includes(index) && (currentTileArray[index] == currentTileArray[index + 1] || currentTileArray[index + 1] == -1)){
-        console.log(index+ " right");
+    if (currentTileArray[index + 1] != undefined && currentTileArray[index] != -1 && !leftArray.includes(index) && (currentTileArray[index] == currentTileArray[index + 1] || currentTileArray[index + 1] == -1)) {
+        console.log(index + " right");
         return true;
     }
-    if(currentTileArray[index - 1] != undefined && currentTileArray[index] != -1 && ! rightArray.includes(index)  && (currentTileArray[index] == currentTileArray[index - 1] || currentTileArray[index - 1] == -1)){
+    if (currentTileArray[index - 1] != undefined && currentTileArray[index] != -1 && !rightArray.includes(index) && (currentTileArray[index] == currentTileArray[index - 1] || currentTileArray[index - 1] == -1)) {
         console.log(index + " left");
         return true;
     }
-    if(currentTileArray[index - 4] != undefined && currentTileArray[index] != -1  && (currentTileArray[index] == currentTileArray[index - 4] || currentTileArray[index - 4] == -1)){
+    if (currentTileArray[index - 4] != undefined && currentTileArray[index] != -1 && (currentTileArray[index] == currentTileArray[index - 4] || currentTileArray[index - 4] == -1)) {
         console.log(index + " up");
         return true;
     }
-    if(currentTileArray[index + 4] != undefined && currentTileArray[index] != -1  && (currentTileArray[index] == currentTileArray[index + 4] || currentTileArray[index + 4] == -1)){
+    if (currentTileArray[index + 4] != undefined && currentTileArray[index] != -1 && (currentTileArray[index] == currentTileArray[index + 4] || currentTileArray[index + 4] == -1)) {
         console.log(index + " down");
         return true;
     }
     return false;
 }
 
-function gameOver(){
+function gameOver() {
     var gameOverTemplate = takeTemplateIdReturnFirstChildNode("#game-over-template");
     var gameParent = document.querySelector("#game-parent-container");
     gameParent.appendChild(gameOverTemplate);
+    lock = true;
 }
 
 const { SwipeEventListener } = window.SwipeEventListener;
@@ -187,22 +190,30 @@ const { swipeArea, updateOptions } = SwipeEventListener({
 });
 
 swipeArea.addEventListener('swipeDown', () => {
-    mergeDown();
-    redraw();
+    if (!lock) {
+        mergeDown();
+        redraw();
+    };
 });
 swipeArea.addEventListener('swipeUp', () => {
-    mergeUp();
-    redraw();
+    if (!lock) {
+        mergeUp();
+        redraw();
+    };
 });
 
 swipeArea.addEventListener('swipeLeft', () => {
-    mergeLeft();
-    redraw();
+    if (!lock) {
+        mergeLeft();
+        redraw();
+    };
 });
 
 swipeArea.addEventListener('swipeRight', () => {
-    mergeRight();
-    redraw();
+    if (!lock) {
+        mergeRight();
+        redraw();
+    };
 });
 
 document.querySelector("#game-container").addEventListener("touchstart", preventScroll);
@@ -210,29 +221,30 @@ document.querySelector("#game-container").addEventListener("touchmove", preventS
 document.querySelector("#game-container").addEventListener("touchend", preventScroll);
 document.querySelector("#game-container").addEventListener("touchcancel", preventScroll);
 
-function preventScroll(e){
+function preventScroll(e) {
     e.preventDefault();
     e.stopPropagation();
 }
 
 function updateTiles(e) {
-    console.log("ran");
 
-    if (e.key == "ArrowDown") {
-        mergeDown();
-        redraw();
-    };
-    if (e.key == "ArrowUp") {
-        mergeUp();
-        redraw();
-    };
-    if (e.key == "ArrowLeft") {
-        mergeLeft();
-        redraw();
-    };
-    if (e.key == "ArrowRight") {
-        mergeRight();
-        redraw();
+    if (!lock) {
+        if (e.key == "ArrowDown") {
+            mergeDown();
+            redraw();
+        };
+        if (e.key == "ArrowUp") {
+            mergeUp();
+            redraw();
+        };
+        if (e.key == "ArrowLeft") {
+            mergeLeft();
+            redraw();
+        };
+        if (e.key == "ArrowRight") {
+            mergeRight();
+            redraw();
+        };
     };
 }
 function mergeDown() {
@@ -296,9 +308,9 @@ function mergeAIntoB(indexA, indexB, mergeSame) {
     return mergeSame;
 }
 
-function updateScore(index){
+function updateScore(index) {
     currentScore += (currentTileArray[index] + currentTileArray[index]);
-    if(currentScore > bestScore){
+    if (currentScore > bestScore) {
         bestScore = currentScore;
     }
 }

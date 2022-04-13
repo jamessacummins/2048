@@ -1,78 +1,86 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    </head>
-    <body>
-        <div id="content">
-            <div id="container">
-                <div id="heading-container">
-                    <div id="twenty48-container">
-                        2048
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+</head>
+
+<body>
+    <div id="content">
+        <div id="container">
+            <div id="heading-container">
+                <div id="twenty48-container">
+                    2048
+                </div>
+                <div id="current-score-container" class="score-container">
+                    <div class="score-text">
+                        SCORE
                     </div>
-                    <div id="current-score-container" class="score-container">
-                        <div class="score-text">
-                            SCORE
-                        </div>
-                        <div class="score-number" id="current-score">
-                            0
-                        </div>
-                    </div>
-                    <div id="best-score-container" class="score-container">
-                        <div class="score-text">
-                            BEST
-                        </div>
-                        <div class="score-number" id="best-score">
-                            0
-                        </div>
+                    <div class="score-number" id="current-score">
+                        0
                     </div>
                 </div>
-                <div id="new-game-row">
-                    <div id="new-game-button" onclick="reset()">
-                        New Game
+                <div id="best-score-container" class="score-container">
+                    <div class="score-text">
+                        BEST
+                    </div>
+                    <div class="score-number" id="best-score">
+                        0
                     </div>
                 </div>
-                <div id ="game-parent-container">
-                    <div id="game-container">
-                        <div id="tiles-container">
-                        </div>
-                    </div>
-                    
+            </div>
+            <div id="new-game-row">
+                <div id="new-game-button" onclick="reset()">
+                    New Game
                 </div>
+            </div>
+            <div id="game-parent-container">
+                <div id="game-container">
+                    <div id="tiles-container">
+                    </div>
+                </div>
+
             </div>
         </div>
-        <template id="tile-template">
-            <div class="tile">
-                <div class="tile-number">
-                    
-                </div>
+    </div>
+    <template id="tile-template">
+        <div class="tile">
+            <div class="tile-number">
+
             </div>
-        </template>
-        <template id="game-over-template">
-            <div id="game-over-container">
-                <div id="game-over-text">
-                    Game Over
-                </div>
-                <div id="try-again-button" onclick="reset()">
-                    Try Again
-                </div>
+        </div>
+    </template>
+    <template id="game-over-template">
+        <div id="game-over-container">
+            <div id="game-over-text">
+                Game Over
             </div>
-        </template>
-        <template id="won-game-template">
-            <div id="win-container">
-                <div id="win-text">
-                    You Win!
-                </div>
-                <div id="try-again-button" onclick="reset()">
-                    Try Again
-                </div>
-                <div id="keep-going-button" onclick="keepGoing()">
-                    Keep Going
-                </div>
+            <div id="try-again-button" onclick="reset()">
+                Try Again
             </div>
-        </template>
-    </body>
-    <script src="https://unpkg.com/swipe-event-listener@1.2.1/dist/swipe-event-listener.js"></script>
-    <script src="script.js"></script>
+        </div>
+    </template>
+    <template id="won-game-template">
+        <div id="win-container">
+            <div id="win-text">
+                You Win!
+            </div>
+            <div id="try-again-button" onclick="reset()">
+                Try Again
+            </div>
+            <div id="keep-going-button" onclick="keepGoing()">
+                Keep Going
+            </div>
+        </div>
+    </template>
+</body>
+<script src="https://unpkg.com/swipe-event-listener@1.2.1/dist/swipe-event-listener.js"></script>
+<script src="script.js"></script>
+
 </html>
